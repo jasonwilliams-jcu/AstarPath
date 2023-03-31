@@ -161,10 +161,27 @@ public class PathMarker
 
         }
 
+    void GetPath()
+    {
+        RemoveAllMarkers();
+        PathMarker begin = lastPos;
+
+        while(!startNode.Equals(begin) && begin != null)
+        {
+            Instantiate(pathP, new Vector3(begin.location.x * maze.scale, 0, begin.location.z * maze.scale),
+                Quaternion.identity);
+            begin = begin.parent;
+        }
+
+        Instantiate(pathP, new Vector3(startNode.location.x * maze.scale, 0, startNode.location.z * maze.scale),
+                    Quaternion.identity);
+    }
+
         // Update is called once per frame
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.P)) BeginSearch();
-            if (Input.GetKeyDown(KeyCode.C)) Search(lastPos);
+            if (Input.GetKeyDown(KeyCode.C) && !done) Search(lastPos);
+            if (Input.GetKeyDown(KeyCode.M)) GetPath();
         }
     }
